@@ -44,14 +44,14 @@ async def quiz_2(call: types.CallbackQuery):
         'Доминик Торрето',
         'Джеки Чан',
         'Пол Уокер',
-        'Вин Дизель',
+        'Брайан',
     ]
     await bot.send_poll(
         chat_id=call.from_user.id,
         question=question,
         options=answer,
         open_period=17,
-        correct_option_id=2 or 3,
+        correct_option_id=2,
         type='quiz',
         is_anonymous=False
     )
