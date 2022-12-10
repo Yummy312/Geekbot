@@ -31,7 +31,8 @@ async def quiz(message: types.Message):
         correct_option_id=1,
         open_period=20,
         explanation='УПС',
-        reply_markup=div_button
+        reply_markup=div_button,
+        is_anonymous=False
 
     )
 
@@ -52,6 +53,7 @@ async def quiz_2(call: types.CallbackQuery):
         open_period=17,
         correct_option_id=2 or 3,
         type='quiz',
+        is_anonymous=False
     )
 
 
