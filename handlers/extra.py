@@ -7,21 +7,20 @@ from random import choice
 
 async def start_pooling(message: types.Message):
     if message.chat.type != 'private':
-        if message.text.startswith('game'):
-            if message.from_user.id != ADMIN:
-                await message.answer('Вы не админ и поэтому данная функция для вас недоступна')
-            else:
+        if message.from_user.id != ADMIN:
+            await message.answer('Вы не админ и поэтому данная функция для вас недоступна')
+        else:
+            if message.text.startswith('game'.lower()):
                 emoji_ls = ['⚽', '🏀', '🎲', '🎯', '🎳', '🎰']
                 await bot.send_dice(message.chat.id, emoji=choice(emoji_ls))
 
-    if message.chat.type != 'private':
-        if not message.reply_to_message and message.text == '!pin':
-            await message.answer('Команда должна быть ответом на сообщение')
-        else:
-            if message.text == '!pin':
-                await bot.pin_chat_message(message.chat.id, message.reply_to_message.message_id)
+            if not message.reply_to_message and message.text == '!pin':
+                await message.answer('Команда должна быть ответом на сообщение')
+            else:
+                if message.text == '!pin':
+                    await bot.pin_chat_message(message.chat.id, message.reply_to_message.message_id)
 
-    if message.chat.type == 'private':
+    elif message.chat.type == 'private':
         if message.text.isdigit():
             num = int(message.text)
             res = num * num
