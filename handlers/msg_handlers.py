@@ -1,9 +1,9 @@
 from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from database import  random_choice_mentor
 from config import bot, dp
 from random import choice
 import os
-os.chdir('media')
 
 
 async def quiz(message: types.Message):
@@ -14,7 +14,7 @@ async def quiz(message: types.Message):
     question = "Кортеж это какой тип данных?"
     answer = [
         'изменяемый',
-        'неизменяемый' ,
+        'неизменяемый',
         'двоичный',
         'волнообразный',
     ]
@@ -33,11 +33,20 @@ async def quiz(message: types.Message):
 
 
 async def mem_send(message: types.Message):
-    list_photos = os.listdir(f'{os.getcwd()}')
-    photo = open(os.getcwd()+'\\'+choice(list_photos), 'rb')
+    file_list = []
+    for filename in os.listdir('media'):
+        file_list.append(filename)
+    result = choice(file_list)
+    photo = open(f'media/{result}', 'rb')
+    print(photo)
     await bot.send_photo(message.chat.id, photo=photo)
 
 
-def register_message_handlers(dp:Dispatcher):
+async def get_random_mentors(message: types.Message):
+    await random_choice_mentor(message)
+
+
+def register_message_handlers(dp: Dispatcher):
     dp.register_message_handler(quiz, commands=['quiz'])
     dp.register_message_handler(mem_send, commands=['mem'])
+    dp.register_message_handler(get_random_mentors, commands=['random'])

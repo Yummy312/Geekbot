@@ -6,6 +6,7 @@ from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from config import ADMIN
 from keyboard.clent_kb import direct_markup, submit_markup, cancel_markup
+from database import command_insert_sql
 
 
 class FSMAdmin(StatesGroup):
@@ -98,6 +99,7 @@ async def submit_fsm(message: types.Message, state: FSMContext):
         await message.answer('Выбери ответ из списка!')
     else:
         if message.text.lower() == 'да':
+            await command_insert_sql(state)
             await state.finish()
             await message.answer('Ты зареган')
         elif message.text.lower() == 'нет':
