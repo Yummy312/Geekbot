@@ -29,7 +29,7 @@ async def delete_mentor(message: types.Message):
                                        text=f"id: {mentor[0]}\nname: {mentor[1]}\ndirect: {mentor[2]}\n"
                                             f"age: {mentor[3]}\ngroup: {mentor[4]}",
                                        reply_markup=InlineKeyboardMarkup().add
-                                       (InlineKeyboardButton('DELETE', callback_data=mentor[0])))
+                                       (InlineKeyboardButton('DELETE', callback_data=f"delete{mentor[0]}")))
 
 
 async def complete_delete(call: types.CallbackQuery):
@@ -41,4 +41,4 @@ async def complete_delete(call: types.CallbackQuery):
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(show_all_mentors, commands=['all'])
     dp.register_message_handler(delete_mentor, commands=['del'])
-    dp.register_callback_query_handler(complete_delete, lambda call: call.data)
+    dp.register_callback_query_handler(complete_delete, lambda call: call.data and call.data.startswith('delete'))

@@ -1,8 +1,9 @@
 from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from database import  random_choice_mentor
+from database import random_choice_mentor
 from config import bot, dp
 from random import choice
+from parser_films.films import parsing_films
 import os
 
 
@@ -46,7 +47,21 @@ async def get_random_mentors(message: types.Message):
     await random_choice_mentor(message)
 
 
+async def get_films(message: types.Message):
+    content = parsing_films(2)
+    count = 0
+    for film in content:
+        await bot.send_photo(message.from_user.id, photo=film['image'],
+                             caption=f"Название: {film['title']}\nЖанр: {film['genre']}"
+                                     f"\nДата выпуска: {film['date']}\nСтрана: {film['country']}",
+                             reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton('перейти', url=film['link'])))
+        if count == 3:
+            break
+        count += 1
+
+
 def register_message_handlers(dp: Dispatcher):
     dp.register_message_handler(quiz, commands=['quiz'])
     dp.register_message_handler(mem_send, commands=['mem'])
     dp.register_message_handler(get_random_mentors, commands=['random'])
+    dp.register_message_handler(get_films, commands=['film'])
