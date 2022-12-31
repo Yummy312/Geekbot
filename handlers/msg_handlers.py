@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database import random_choice_mentor
 from config import bot, dp
 from random import choice
-from parser_films.films import parsing_films
+from parser_films.films import ParserFilm, URL
 import os
 
 
@@ -48,7 +48,9 @@ async def get_random_mentors(message: types.Message):
 
 
 async def get_films(message: types.Message):
-    content = parsing_films(2)
+    obj_parser = ParserFilm()
+    obj_parser.get_html(URL)
+    content = obj_parser.parsing_pages(count=5)
     count = 0
     for film in content:
         await bot.send_photo(message.from_user.id, photo=film['image'],
